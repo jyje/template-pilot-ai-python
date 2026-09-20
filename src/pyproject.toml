@@ -1,7 +1,7 @@
 [project]
 name = "template-pilot-ai-python"
 version = "0.1.0"
-description = "GitHub template for a Python pilot: LangGraph on a ChatGPT subscription or NVIDIA NIM"
+description = "GitHub template for an AI pilot in Python: LangGraph on a ChatGPT subscription or NVIDIA NIM"
 requires-python = ">=3.13,<3.14"
 dependencies = [
     "aiohttp>=3.9",

@@ -6,7 +6,7 @@
 
 <!-- pilot:tagline -->
 
-🧪 基于 ChatGPT 订阅或 NVIDIA NIM 的 Python 试点 GitHub 模板
+🧪 基于 ChatGPT 订阅或 NVIDIA NIM 的 Python AI 试点 GitHub 模板
 
 <!-- /pilot:tagline -->
 

@@ -6,7 +6,7 @@
 
 <!-- pilot:tagline -->
 
-🧪 GitHub template for Python pilots on a ChatGPT subscription or NVIDIA NIM
+🧪 GitHub template for AI pilots in Python on a ChatGPT subscription or NVIDIA NIM
 
 <!-- /pilot:tagline -->
 

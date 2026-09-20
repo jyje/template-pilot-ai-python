@@ -6,7 +6,7 @@
 
 <!-- pilot:tagline -->
 
-🧪 ChatGPT 구독 또는 NVIDIA NIM으로 만드는 Python 파일럿용 GitHub 템플릿
+🧪 ChatGPT 구독 또는 NVIDIA NIM으로 만드는 Python AI 파일럿용 GitHub 템플릿
 
 <!-- /pilot:tagline -->
 

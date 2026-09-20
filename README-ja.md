@@ -6,7 +6,7 @@
 
 <!-- pilot:tagline -->
 
-🧪 ChatGPT サブスクリプションまたは NVIDIA NIM で動かす Python パイロット用 GitHub テンプレート
+🧪 ChatGPT サブスクリプションまたは NVIDIA NIM で動かす Python AI パイロット用 GitHub テンプレート
 
 <!-- /pilot:tagline -->
 
