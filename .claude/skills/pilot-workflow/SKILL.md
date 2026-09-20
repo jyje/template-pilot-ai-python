@@ -24,7 +24,7 @@ Read `GOAL.md`. Ask the user only about what the request and the code cannot set
 and its docs URL, the cases to build, the Python version if not 3.13, the extra skills to install.
 Never ask about layout, test tools, or doc structure. Follow the template and say so.
 
-- **Read local before fetching.** Sibling repos under `~/repo/jyje/` are already on the machine. Do
+- **Read local before fetching.** Related repos are often already checked out locally (for example under `~/repo/<owner>/`). Do
   not clone them. If one is missing, fetch single files with `gh api`.
 - Keep private analysis in `temp/` (gitignored). Never publish it.
 - Install the vendor's own skill with `npx skills add <vendor>/skills --skill <skill> --agent claude-code --copy -y`.
@@ -80,4 +80,4 @@ project's item. Never read or copy `~/.codex/auth.json`.
 - When every `PLAN.md` box is ticked: run a code review, apply the valid findings, then delete
   `PLAN.md` (history keeps it), remove its links, commit `🚀 release: v0.1.0`, tag `v0.1.0`, push, and
   create the GitHub release. The `release.yml` workflow does the last step for tags.
-- Add the finished pilot to the `jyje/awesome-pilots` index.
+- Add the finished pilot to your pilot index, if you keep one (for example an awesome-pilots list).
