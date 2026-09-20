@@ -77,4 +77,4 @@ npx -y -p @mermaid-js/mermaid-cli mmdc -i diagram.mmd -o diagram.svg
 2. `PLAN.md`를 삭제하고 링크를 지운 뒤 `🚀 release: v0.1.0`으로 커밋합니다.
 3. `git tag -a v0.1.0 -m v0.1.0`으로 태그를 달고 커밋과 태그를 푸시합니다. `release.yml` 워크플로가 이전 태그
    이후의 커밋(`cliff.toml`)으로 GitHub Release를 만듭니다.
-4. 완성된 파일럿을 `jyje/awesome-pilots` 색인에 추가합니다.
+4. 완성된 파일럿을 파일럿 색인(예: awesome-pilots 목록)이 있다면 거기에 추가합니다.

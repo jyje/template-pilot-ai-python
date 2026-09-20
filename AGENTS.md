@@ -67,7 +67,7 @@ uv run langgraph dev                     # needs --extra studio
 - The `openai` provider uses ChatGPT OAuth, never `OPENAI_API_KEY`. It is experimental and unofficial,
   so keep the terms warning. Never read or copy `~/.codex/auth.json`.
 - The `.env` file is gitignored. Never print, log, or commit key values.
-- Sibling repos under `~/repo/jyje` are already on the machine: read them there, never clone them.
+- Related repos are often already checked out locally (for example under `~/repo/<owner>`): read them there, never clone them.
 - Simple, long-running work goes to the background. Do multilingual work in the main session. Use
   subagents only for a genuinely clean context, such as an independent code review.
 - Commits follow `.claude/skills/git-commit-helper/SKILL.md`. One `PLAN.md` item is one commit. Never

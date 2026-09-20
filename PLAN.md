@@ -83,4 +83,4 @@ v0.1.0 is ready to publish.** Delete this file at release; git history keeps it.
 - [ ] Commits created one by one from this checklist, after approval
 - [ ] Delete `PLAN.md`, remove its links, commit `🚀 release: v0.1.0`
 - [ ] Tag `v0.1.0`, push, create the GitHub release
-- [ ] Add the pilot to the `jyje/awesome-pilots` index
+- [ ] Add the pilot to your pilot index, if you keep one

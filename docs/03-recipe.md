@@ -80,4 +80,4 @@ calls, NaN slipping through threshold comparisons, empty input reaching the vend
 2. Delete `PLAN.md`, remove its links, commit `🚀 release: v0.1.0`.
 3. `git tag -a v0.1.0 -m v0.1.0`, push the commit and the tag. The `release.yml` workflow creates the
    GitHub Release from the commits since the previous tag (`cliff.toml`).
-4. Add the pilot to the `jyje/awesome-pilots` index.
+4. Add the pilot to your pilot index, if you keep one (for example an awesome-pilots list).

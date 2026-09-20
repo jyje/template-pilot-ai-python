@@ -22,7 +22,7 @@ defaults you picked for the rest.
 | 5 | Cases to build, one folder each | |
 | 6 | Chat model providers | Default: (1) ChatGPT subscription through Codex OAuth, (2) NVIDIA NIM |
 | 7 | Python version | 3.13 |
-| 8 | Reference projects (read them locally under `~/repo/jyje`, do not clone) | |
+| 8 | Reference projects (read local checkouts, do not clone) | |
 | 9 | Vendor logo for the README | |
 | 10 | Doc languages, in this order | English, Korean, Japanese, Simplified Chinese |
 | 11 | Verification | scripts and notebooks, with repeated experiments |
