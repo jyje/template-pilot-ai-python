@@ -46,7 +46,8 @@ def text_files(root: Path):
 def transform(text: str, path: Path, name: str, owner: str, description: str) -> str:
     text = text.replace(f"{TEMPLATE_OWNER}/{TEMPLATE_NAME}", f"{owner}/{name}")
     text = text.replace(TEMPLATE_NAME, name)
-    text = TAGLINE.sub(lambda m: f"{m.group(1)}🚀 Pilot project for {description}{m.group(2)}", text)
+    # The tagline sits between the markers as its own paragraph, so GitHub renders it under the logo.
+    text = TAGLINE.sub(lambda m: f"{m.group(1)}\n\n🚀 Pilot project for {description}\n\n{m.group(2)}", text)
     text = TEMPLATE_BLOCK.sub("", text)
     if path.name == "pyproject.toml":
         text = re.sub(r'^description = ".*"$', f'description = "{description}"', text, flags=re.M)

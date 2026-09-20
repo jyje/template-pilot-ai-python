@@ -4,7 +4,11 @@
 
 <img width="120" src="https://raw.githubusercontent.com/marwin1991/profile-technology-icons/refs/heads/main/icons/python.png" alt="Python" title="Python"/>
 
-<!-- pilot:tagline -->🧪 ChatGPT 구독 또는 NVIDIA NIM으로 만드는 Python 파일럿용 GitHub 템플릿<!-- /pilot:tagline -->
+<!-- pilot:tagline -->
+
+🧪 ChatGPT 구독 또는 NVIDIA NIM으로 만드는 Python 파일럿용 GitHub 템플릿
+
+<!-- /pilot:tagline -->
 
 [![GitHub Repo stars](https://img.shields.io/github/stars/jyje/template-pilot-ai-python?style=social)](https://github.com/jyje/template-pilot-ai-python)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)

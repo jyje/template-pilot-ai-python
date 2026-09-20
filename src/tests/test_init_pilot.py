@@ -57,7 +57,7 @@ def test_it_sets_the_tagline_and_drops_the_template_block_in_every_readme(copy):
     run(copy, "--keep-script")
     for readme in copy.glob("README*.md"):
         text = readme.read_text()
-        assert "🚀 Pilot project for a demo topic" in text, readme.name
+        assert "\n\n🚀 Pilot project for a demo topic\n\n" in text, readme.name  # its own paragraph
         assert "template:begin" not in text, readme.name
         assert "jyje/pilot-demo-topic" in text, readme.name
 
