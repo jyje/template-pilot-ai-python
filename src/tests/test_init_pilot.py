@@ -2,6 +2,7 @@
 
 import importlib.util
 import shutil
+import tomllib
 from pathlib import Path
 
 import pytest
@@ -79,6 +80,22 @@ def test_bad_names_are_rejected(copy):
     script = load_script()
     with pytest.raises(SystemExit):
         script.main(["Bad Name", "--description", "x"], root=copy)
+
+
+@pytest.mark.parametrize(
+    "description",
+    [
+        'a "quoted" description',
+        "a description with a backslash: " + chr(92),
+        "a description\nwith a newline",
+        "an 한국어 description",
+    ],
+)
+def test_special_characters_in_a_description_keep_pyproject_toml_valid(copy, description):
+    script = load_script()
+    assert script.main(["pilot-demo-topic", "--description", description, "--keep-script"], root=copy) == 0
+    pyproject = tomllib.loads((copy / "src" / "pyproject.toml").read_text())
+    assert pyproject["project"]["description"] == description
 
 
 @pytest.mark.parametrize(
