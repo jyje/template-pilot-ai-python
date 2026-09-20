@@ -18,6 +18,7 @@ from __future__ import annotations
 
 import argparse
 import re
+import subprocess
 import sys
 from pathlib import Path
 
@@ -28,6 +29,22 @@ TAGLINE = re.compile(r"(<!-- pilot:tagline -->).*?(<!-- /pilot:tagline -->)", re
 TEMPLATE_BLOCK = re.compile(r"<!-- template:begin -->.*?<!-- template:end -->\n*", re.S)
 TEMPLATE_ONLY_FILES = ("scripts/init_pilot.py", "src/tests/test_init_pilot.py")
 NAME_RE = re.compile(r"^pilot-[a-z0-9]+(-[a-z0-9]+)*$")
+REMOTE_OWNER = re.compile(r"github\.com[:/]([^/\s]+)/[^/\s]+?(?:\.git)?/?$")
+
+
+def detect_owner(root: Path) -> str:
+    """Owner of the `origin` remote, so a repo made from the template keeps its own owner."""
+    try:
+        url = subprocess.run(
+            ["git", "-C", str(root), "remote", "get-url", "origin"],
+            capture_output=True,
+            text=True,
+            check=True,
+        ).stdout.strip()
+    except (OSError, subprocess.CalledProcessError):
+        return TEMPLATE_OWNER
+    match = REMOTE_OWNER.search(url)
+    return match.group(1) if match else TEMPLATE_OWNER
 
 
 def text_files(root: Path):
@@ -58,7 +75,7 @@ def main(argv: list[str], root: Path | None = None) -> int:
     parser = argparse.ArgumentParser(description="Turn this template into a pilot repository.")
     parser.add_argument("name", help="new repository name, for example pilot-my-topic")
     parser.add_argument("--description", required=True, help="one sentence: what the pilot studies")
-    parser.add_argument("--owner", default=TEMPLATE_OWNER, help="GitHub owner (default: jyje)")
+    parser.add_argument("--owner", help="GitHub owner (default: owner of the origin remote)")
     parser.add_argument("--dry-run", action="store_true", help="show what would change, write nothing")
     parser.add_argument("--keep-script", action="store_true", help="do not delete this script")
     args = parser.parse_args(argv)
@@ -66,11 +83,12 @@ def main(argv: list[str], root: Path | None = None) -> int:
     if not NAME_RE.match(args.name):
         parser.error("name must look like pilot-some-topic (lowercase letters, digits, hyphens)")
     root = root or Path(__file__).resolve().parent.parent
+    owner = args.owner or detect_owner(root)
 
     changed = 0
     for path in text_files(root):
         old = path.read_text(encoding="utf-8")
-        new = transform(old, path, args.name, args.owner, args.description)
+        new = transform(old, path, args.name, owner, args.description)
         if new != old:
             changed += 1
             print(("would update " if args.dry_run else "updated ") + str(path.relative_to(root)))

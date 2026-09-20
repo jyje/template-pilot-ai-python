@@ -79,3 +79,24 @@ def test_bad_names_are_rejected(copy):
     script = load_script()
     with pytest.raises(SystemExit):
         script.main(["Bad Name", "--description", "x"], root=copy)
+
+
+@pytest.mark.parametrize(
+    "url",
+    [
+        "git@github.com:someone/pilot-x.git",
+        "https://github.com/someone/pilot-x",
+        "https://github.com/someone/pilot-x.git",
+    ],
+)
+def test_the_owner_comes_from_the_origin_remote(tmp_path, url):
+    import subprocess
+
+    subprocess.run(["git", "init", "-q", str(tmp_path)], check=True)
+    subprocess.run(["git", "-C", str(tmp_path), "remote", "add", "origin", url], check=True)
+    assert load_script().detect_owner(tmp_path) == "someone"
+
+
+def test_the_owner_falls_back_to_the_template_owner_without_a_remote(tmp_path):
+    script = load_script()
+    assert script.detect_owner(tmp_path) == script.TEMPLATE_OWNER
