@@ -9,7 +9,7 @@ What it does:
 - renames `template-pilot-python` to the new repository name everywhere (text files, uv.lock);
 - sets the package description and the README tagline in all languages;
 - drops the "Use this template" blocks from the READMEs;
-- deletes itself, unless --keep-script is given.
+- deletes itself and its own test (src/tests/test_init_pilot.py), unless --keep-script is given.
 
 It does not touch git. Commit the result yourself: `🎉 init: set up pilot-topic`.
 """
@@ -26,6 +26,7 @@ TEMPLATE_OWNER = "jyje"
 SKIP_DIRS = {".git", ".venv", "__pycache__", ".pytest_cache", ".ruff_cache", "temp", "node_modules"}
 TAGLINE = re.compile(r"(<!-- pilot:tagline -->).*?(<!-- /pilot:tagline -->)", re.S)
 TEMPLATE_BLOCK = re.compile(r"<!-- template:begin -->.*?<!-- template:end -->\n*", re.S)
+TEMPLATE_ONLY_FILES = ("scripts/init_pilot.py", "src/tests/test_init_pilot.py")
 NAME_RE = re.compile(r"^pilot-[a-z0-9]+(-[a-z0-9]+)*$")
 
 
@@ -75,10 +76,11 @@ def main(argv: list[str], root: Path | None = None) -> int:
             if not args.dry_run:
                 path.write_text(new, encoding="utf-8")
 
-    script = root / "scripts" / "init_pilot.py"
-    if not args.keep_script and not args.dry_run and script.exists():
-        script.unlink()
-        print("deleted scripts/init_pilot.py")
+    if not args.keep_script and not args.dry_run:
+        for leftover in TEMPLATE_ONLY_FILES:
+            if (root / leftover).exists():
+                (root / leftover).unlink()
+                print(f"deleted {leftover}")
 
     print(f"\n{changed} file(s) {'would change' if args.dry_run else 'changed'}.")
     if not args.dry_run:

@@ -62,9 +62,10 @@ def test_it_sets_the_tagline_and_drops_the_template_block_in_every_readme(copy):
         assert "jyje/pilot-demo-topic" in text, readme.name
 
 
-def test_it_deletes_itself_unless_asked_not_to(copy):
+def test_it_deletes_itself_and_its_test_unless_asked_not_to(copy):
     run(copy)
     assert not (copy / "scripts" / "init_pilot.py").exists()
+    assert not (copy / "src" / "tests" / "test_init_pilot.py").exists()
 
 
 def test_dry_run_writes_nothing(copy):
