@@ -1,0 +1,30 @@
+name: Copilot Setup Steps
+
+# Prepares the environment of the GitHub Copilot coding agent: uv and the project dependencies.
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - .github/workflows/copilot-setup-steps.yml
+      - src/pyproject.toml
+      - src/uv.lock
+  pull_request:
+    paths:
+      - .github/workflows/copilot-setup-steps.yml
+      - src/pyproject.toml
+      - src/uv.lock
+
+jobs:
+  copilot-setup-steps:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.13"
+      - name: Install dependencies
+        working-directory: src
+        run: uv sync --locked
