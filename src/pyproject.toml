@@ -1,0 +1,55 @@
+[project]
+name = "template-pilot-python"
+version = "0.1.0"
+description = "GitHub template for a Python pilot: LangGraph on a ChatGPT subscription or NVIDIA NIM"
+requires-python = ">=3.13,<3.14"
+dependencies = [
+    "aiohttp>=3.9",
+    "httpx>=0.27",
+    "langchain-nvidia-ai-endpoints>=1.4.3",
+    "langchain-openai>=1.6.2",
+    "langgraph>=1.2.11",
+    "python-dotenv>=1.2.3",
+    "requests>=2.31",
+]
+
+[project.optional-dependencies]
+deepagents = [
+    "deepagents>=0.7.15",
+]
+studio = [
+    "langgraph-cli[inmem]>=0.4.0",
+]
+notebook = [
+    "jupyter>=1.1.0",
+    "ipykernel>=6.29.0",
+    "nbformat>=5.10.0",
+    "nbconvert>=7.16.0",
+]
+
+[dependency-groups]
+dev = [
+    "nbformat>=5.11.1",
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.23.0",
+    "ruff>=0.6.0",
+    "ty>=0.0.82",
+]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+pythonpath = ["."]
+
+[tool.ruff]
+line-length = 100
+target-version = "py313"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "BLE", "RUF", "ISC", "TRY"]
+ignore = ["TRY003"]
+
+[tool.ruff.lint.per-file-ignores]
+# Notebooks put the sys.path setup before their imports on purpose.
+"*.ipynb" = ["E402"]
+"tests/*" = ["TRY002"]
