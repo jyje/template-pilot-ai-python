@@ -45,7 +45,7 @@ def test_it_renames_the_template_everywhere(copy):
         and not p.is_symlink()
         and ".git" not in p.parts
         and p.suffix not in {".png", ".ipynb"}
-        and "template-pilot-python" in p.read_text(errors="ignore")
+        and "template-pilot-ai-python" in p.read_text(errors="ignore")
         and p.name != "init_pilot.py"
     ]
     assert leftovers == []

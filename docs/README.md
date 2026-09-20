@@ -1,4 +1,4 @@
-# Documentation: template-pilot-python
+# Documentation: template-pilot-ai-python
 
 English / [한국어](#한국어)
 

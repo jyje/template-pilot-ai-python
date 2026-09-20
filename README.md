@@ -1,12 +1,12 @@
 <div align="center">
 
-# jyje/template-pilot-python
+# jyje/template-pilot-ai-python
 
 <img width="120" src="https://raw.githubusercontent.com/marwin1991/profile-technology-icons/refs/heads/main/icons/python.png" alt="Python" title="Python"/>
 
 <!-- pilot:tagline -->🧪 GitHub template for Python pilots on a ChatGPT subscription or NVIDIA NIM<!-- /pilot:tagline -->
 
-[![GitHub Repo stars](https://img.shields.io/github/stars/jyje/template-pilot-python?style=social)](https://github.com/jyje/template-pilot-python)
+[![GitHub Repo stars](https://img.shields.io/github/stars/jyje/template-pilot-ai-python?style=social)](https://github.com/jyje/template-pilot-ai-python)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/Python-3.13-blue)](https://www.python.org)
 [![ChatGPT](https://img.shields.io/badge/Inference-ChatGPT-10A37F)](docs/02-providers.md)
@@ -26,7 +26,7 @@
 Create a repo from this template, rename it into a pilot, then follow the recipe.
 
 ```bash
-gh repo create jyje/pilot-<topic> --template jyje/template-pilot-python --public --clone
+gh repo create jyje/pilot-<topic> --template jyje/template-pilot-ai-python --public --clone
 cd pilot-<topic>
 python3 scripts/init_pilot.py pilot-<topic> --description "what it studies"
 ```

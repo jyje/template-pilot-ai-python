@@ -17,14 +17,14 @@ body = """
 <details>
 <summary>{{ group_name }} ({{ commits | length }})</summary>
 {% for commit in commits %}
-- {{ commit.message | split(pat="\n") | first | trim | upper_first }} ([`{{ commit.id | truncate(length=7, end="") }}`](https://github.com/jyje/template-pilot-python/commit/{{ commit.id }})) — {% if commit.remote.username %}@{{ commit.remote.username }}{% else %}{{ commit.author.name }}{% endif %}\
+- {{ commit.message | split(pat="\n") | first | trim | upper_first }} ([`{{ commit.id | truncate(length=7, end="") }}`](https://github.com/jyje/template-pilot-ai-python/commit/{{ commit.id }})) — {% if commit.remote.username %}@{{ commit.remote.username }}{% else %}{{ commit.author.name }}{% endif %}\
 {% endfor %}
 
 </details>
 {% else -%}
 ### {{ group_name }}
 {% for commit in commits %}
-- {{ commit.message | split(pat="\n") | first | trim | upper_first }} ([`{{ commit.id | truncate(length=7, end="") }}`](https://github.com/jyje/template-pilot-python/commit/{{ commit.id }})) — {% if commit.remote.username %}@{{ commit.remote.username }}{% else %}{{ commit.author.name }}{% endif %}\
+- {{ commit.message | split(pat="\n") | first | trim | upper_first }} ([`{{ commit.id | truncate(length=7, end="") }}`](https://github.com/jyje/template-pilot-ai-python/commit/{{ commit.id }})) — {% if commit.remote.username %}@{{ commit.remote.username }}{% else %}{{ commit.author.name }}{% endif %}\
 {% endfor %}
 {% endif %}
 {% endfor %}\n
@@ -72,4 +72,4 @@ sort_commits = "oldest"
 # generation time; without one the template falls back to the git author name.
 [remote.github]
 owner = "jyje"
-repo = "template-pilot-python"
+repo = "template-pilot-ai-python"

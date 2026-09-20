@@ -2426,7 +2426,7 @@ wheels = [
 ]
 
 [[package]]
-name = "template-pilot-python"
+name = "template-pilot-ai-python"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [

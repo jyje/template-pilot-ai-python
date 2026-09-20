@@ -1,7 +1,7 @@
 # AGENTS.md
 
 Context for AI coding agents (Claude Code, Codex, Hermes, Copilot). This repo came from the
-`template-pilot-python` template. Scope and progress live in [`PLAN.md`](PLAN.md); the intent lives in
+`template-pilot-ai-python` template. Scope and progress live in [`PLAN.md`](PLAN.md); the intent lives in
 [`GOAL.md`](GOAL.md). Read the `pilot-workflow` skill before you start.
 
 ## Purpose

@@ -39,7 +39,7 @@ v0.1.0 is ready to publish.** Delete this file at release; git history keeps it.
 
 ### Foundation
 
-- [x] Template: license, `.gitignore`, skills, `.agents` link, uv app, providers, CI &mdash; from `template-pilot-python`
+- [x] Template: license, `.gitignore`, skills, `.agents` link, uv app, providers, CI &mdash; from `template-pilot-ai-python`
 - [ ] Repository basics for this pilot (`init_pilot.py`, `.env`, vendor skill installed) &mdash; `🎉 init: set up <repo>`
 
 ### Core library

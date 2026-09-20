@@ -6,7 +6,7 @@ Usage:
     python3 scripts/init_pilot.py pilot-topic --description "..." --owner someone --dry-run
 
 What it does:
-- renames `template-pilot-python` to the new repository name everywhere (text files, uv.lock);
+- renames `template-pilot-ai-python` to the new repository name everywhere (text files, uv.lock);
 - sets the package description and the README tagline in all languages;
 - drops the "Use this template" blocks from the READMEs;
 - deletes itself and its own test (src/tests/test_init_pilot.py), unless --keep-script is given.
@@ -21,7 +21,7 @@ import re
 import sys
 from pathlib import Path
 
-TEMPLATE_NAME = "template-pilot-python"
+TEMPLATE_NAME = "template-pilot-ai-python"
 TEMPLATE_OWNER = "jyje"
 SKIP_DIRS = {".git", ".venv", "__pycache__", ".pytest_cache", ".ruff_cache", "temp", "node_modules"}
 TAGLINE = re.compile(r"(<!-- pilot:tagline -->).*?(<!-- /pilot:tagline -->)", re.S)

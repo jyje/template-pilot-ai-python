@@ -3,7 +3,7 @@
 ## Use the template
 
 ```bash
-gh repo create jyje/pilot-<topic> --template jyje/template-pilot-python --public --clone
+gh repo create jyje/pilot-<topic> --template jyje/template-pilot-ai-python --public --clone
 cd pilot-<topic>
 python3 scripts/init_pilot.py pilot-<topic> --description "what it studies"
 ```

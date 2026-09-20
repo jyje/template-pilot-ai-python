@@ -1,12 +1,12 @@
 <div align="center">
 
-# jyje/template-pilot-python
+# jyje/template-pilot-ai-python
 
 <img width="120" src="https://raw.githubusercontent.com/marwin1991/profile-technology-icons/refs/heads/main/icons/python.png" alt="Python" title="Python"/>
 
 <!-- pilot:tagline -->🧪 ChatGPT 구독 또는 NVIDIA NIM으로 만드는 Python 파일럿용 GitHub 템플릿<!-- /pilot:tagline -->
 
-[![GitHub Repo stars](https://img.shields.io/github/stars/jyje/template-pilot-python?style=social)](https://github.com/jyje/template-pilot-python)
+[![GitHub Repo stars](https://img.shields.io/github/stars/jyje/template-pilot-ai-python?style=social)](https://github.com/jyje/template-pilot-ai-python)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/Python-3.13-blue)](https://www.python.org)
 [![ChatGPT](https://img.shields.io/badge/Inference-ChatGPT-10A37F)](docs/02-providers.md)
@@ -26,7 +26,7 @@
 이 템플릿으로 저장소를 만들고, 파일럿 이름으로 바꾼 뒤 레시피를 따르세요.
 
 ```bash
-gh repo create jyje/pilot-<topic> --template jyje/template-pilot-python --public --clone
+gh repo create jyje/pilot-<topic> --template jyje/template-pilot-ai-python --public --clone
 cd pilot-<topic>
 python3 scripts/init_pilot.py pilot-<topic> --description "what it studies"
 ```
