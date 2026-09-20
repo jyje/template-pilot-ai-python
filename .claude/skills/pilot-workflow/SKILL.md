@@ -1,6 +1,6 @@
 ---
 name: pilot-workflow
-description: How to run a jyje-style Python pilot that starts from template-pilot-ai-python. Use when a repo has GOAL.md, PLAN.md, and src/pilot_kit, or when asked to start, continue, verify, document, or release a pilot from this template. Covers init, requirements questions, the checklist plan (one item is one commit), provider setup (ChatGPT Codex and NVIDIA NIM), three-tier verification with repeated experiments, docs with Mermaid and four languages, code review, and the v0.1.0 release.
+description: How to run a Python pilot that follows the agreed conventions and starts from template-pilot-ai-python. Use when a repo has GOAL.md, PLAN.md, and src/pilot_kit, or when asked to start, continue, verify, document, or release a pilot from this template. Covers init, requirements questions, the checklist plan (one item is one commit), provider setup (ChatGPT Codex and NVIDIA NIM), three-tier verification with repeated experiments, docs with Mermaid and four languages, code review, and the v0.1.0 release.
 ---
 
 # Pilot workflow
