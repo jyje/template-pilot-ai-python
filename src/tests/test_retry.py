@@ -1,0 +1,100 @@
+import aiohttp
+import pytest
+
+from pilot_kit.retry import with_retries
+
+
+class VendorError(Exception):
+    """Stands in for an error a vendor SDK already retries itself."""
+
+
+def http_error(status: int):
+    return aiohttp.ClientResponseError(request_info=None, history=(), status=status)  # ty: ignore[invalid-argument-type]
+
+
+async def test_retries_transient_errors_then_succeeds():
+    calls = []
+
+    async def flaky():
+        calls.append(1)
+        if len(calls) < 3:
+            raise ConnectionResetError("reset by peer")
+        return "ok"
+
+    seen = []
+    result = await with_retries(flaky, delay=0, on_retry=lambda n, e: seen.append(n))
+    assert result == "ok"
+    assert len(calls) == 3
+    assert seen == [1, 2]
+
+
+async def test_gives_up_after_the_last_attempt():
+    async def always_down():
+        raise TimeoutError("read timed out")
+
+    with pytest.raises(TimeoutError):
+        await with_retries(always_down, attempts=2, delay=0)
+
+
+async def test_does_not_retry_real_bugs():
+    calls = []
+
+    async def buggy():
+        calls.append(1)
+        raise ValueError("bad input")
+
+    with pytest.raises(ValueError):
+        await with_retries(buggy, delay=0)
+    assert len(calls) == 1
+
+
+async def test_never_retry_types_are_raised_at_once():
+    calls = []
+
+    async def vendor_down():
+        calls.append(1)
+        raise ConnectionError("vendor down")
+
+    with pytest.raises(ConnectionError):
+        await with_retries(vendor_down, delay=0, never_retry=(ConnectionError,))
+    assert len(calls) == 1
+
+
+async def test_permanent_http_errors_are_not_retried_but_busy_ones_are():
+    calls = []
+
+    async def not_found():
+        calls.append(1)
+        raise http_error(404)
+
+    with pytest.raises(aiohttp.ClientResponseError):
+        await with_retries(not_found, delay=0)
+    assert len(calls) == 1
+
+    attempts = []
+
+    async def busy():
+        attempts.append(1)
+        if len(attempts) == 1:
+            raise http_error(503)
+        return "ok"
+
+    assert await with_retries(busy, delay=0) == "ok"
+
+
+async def test_nim_http_503_is_retried_but_403_is_not():
+    calls = []
+
+    async def busy():
+        calls.append(1)
+        if len(calls) == 1:
+            raise Exception("[503] Service Unavailable")
+        return "ok"
+
+    assert await with_retries(busy, delay=0) == "ok"
+
+    async def forbidden():
+        raise Exception("[403] Forbidden")
+
+    with pytest.raises(Exception, match="403"):
+        await with_retries(forbidden, delay=0)
