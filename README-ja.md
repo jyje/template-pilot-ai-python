@@ -44,7 +44,7 @@ python3 scripts/init_pilot.py pilot-<topic> --description "what it studies"
 - **`GOAL.md` と `PLAN.md`**: 最初のプロンプトを残し、1 項目が 1 コミットのチェックリストで計画します。
 - **Mermaid 付きのドキュメント**、リリースワークフロー（タグから git-cliff で GitHub Release）、gitmoji 対応の dependabot、Copilot のセットアップ手順。
 
-次に [GOAL.md](GOAL.md) と [PLAN.md](PLAN.md) を埋め、[レシピ](docs/03-recipe.md)に沿って進めます。
+次に [GOAL.md](GOAL.md) と [PLAN.md](PLAN.md) を埋め、[レシピ](docs/03-recipe-ja.md)に沿って進めます。
 
 <!-- template:end -->
 ## このパイロットの目標
@@ -53,7 +53,7 @@ python3 scripts/init_pilot.py pilot-<topic> --description "what it studies"
 
 **[製品]** を **[フレームワーク]** に実際に組み込み、何ができて何ができないかを記録します。
 
-1. **[製品] を理解する。** [1 行]。[概要](docs/01-getting-started.md)を参照してください。
+1. **[製品] を理解する。** [1 行]。[概要](docs/01-getting-started-ja.md)を参照してください。
 2. **役割分担を示す。** [1 行]。
 3. **[Case 01 の目標]。** [1 行]。
 4. **[Case 02 の目標]。** [1 行]。
@@ -105,9 +105,9 @@ uv run pytest                              # offline tests, no keys needed
 
 | ドキュメント | 内容 |
 | --- | --- |
-| [はじめに](docs/01-getting-started.md) | セットアップ、環境変数、実行、トラブルシューティング |
-| [プロバイダ](docs/02-providers.md) | ChatGPT サブスクリプションと NVIDIA NIM |
-| [レシピ](docs/03-recipe.md) | アイデアから `v0.1.0` まで |
+| [はじめに](docs/01-getting-started-ja.md) | セットアップ、環境変数、実行、トラブルシューティング |
+| [プロバイダ](docs/02-providers-ja.md) | ChatGPT サブスクリプションと NVIDIA NIM |
+| [レシピ](docs/03-recipe-ja.md) | アイデアから `v0.1.0` まで |
 
 エージェント向けコンテキストは [AGENTS.md](AGENTS.md) をご覧ください。
 
