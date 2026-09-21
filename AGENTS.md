@@ -61,6 +61,7 @@ uv run langgraph dev                     # needs --extra studio
   finding only with the exact rule and a reason.
 - Reach the vendor only through a gateway class typed as a `Protocol`, so tests can swap in a fake.
 - Retry the chat model call only, never a whole graph or agent run (a replay calls the vendor again).
+  `pilot_kit.retry` is the only retry owner: keep vendor SDK retries at zero (`max_retries=0`).
 - Model names are account specific. Find them with `python -m pilot_kit.chatgpt_models`, and keep
   account-specific names out of public docs. A model listed in the NIM catalog can still return
   `410 Gone`: call it before relying on it.

@@ -108,7 +108,7 @@ def test_openai_uses_the_codex_oauth_model_without_an_api_key(monkeypatch):
     assert kwargs_of(llm.make_chat_model(provider="openai")) == {
         "model": "gpt-5.5",
         "timeout": 180.0,
-        "max_retries": 2,
+        "max_retries": 0,
     }
 
 
