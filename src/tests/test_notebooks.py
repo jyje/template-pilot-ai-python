@@ -2,16 +2,22 @@
 
 Two kinds, told apart by `metadata.pilot.kind`:
 
-- `example`: a starter that is intentionally not executed yet. Only its schema is checked, plus the
-  provider-independent cells (tagged `offline`), which are run here without any credentials.
+- `example`: a starter that is intentionally not executed yet. Only its schema is checked, and it
+  must have at least one provider-independent cell (tagged `offline`).
 - `result` (the default when the field is missing): a notebook whose outputs are published. Every
   code cell must have run, none may have failed, and at least one must have kept an output.
+
+In every notebook, cells tagged `offline` are re-run here without credentials, so a notebook whose
+code no longer works fails CI even though its committed outputs still look fine.
 
 Flip a notebook from `example` to `result` after running it live (see docs/03-recipe.md).
 """
 
 from __future__ import annotations
 
+import ast
+import asyncio
+import inspect
 import os
 from pathlib import Path
 
@@ -49,7 +55,10 @@ def result_problems(nb: NotebookNode) -> list[str]:
 
 
 def run_offline_cells(nb: NotebookNode, cwd: Path) -> int:
-    """Run the cells tagged `offline` in one namespace, like a notebook. Returns how many ran."""
+    """Run the cells tagged `offline` in one namespace, like a notebook. Returns how many ran.
+
+    Top-level `await` works, as it does in Jupyter.
+    """
     namespace: dict = {"__name__": "__notebook__"}
     ran = 0
     previous = Path.cwd()
@@ -57,7 +66,12 @@ def run_offline_cells(nb: NotebookNode, cwd: Path) -> int:
     try:
         for cell in code_cells(nb):
             if OFFLINE_TAG in cell.metadata.get("tags", []):
-                exec(compile(cell.source, "<notebook cell>", "exec"), namespace)
+                code = compile(
+                    cell.source, "<notebook cell>", "exec", flags=ast.PyCF_ALLOW_TOP_LEVEL_AWAIT
+                )
+                outcome = eval(code, namespace)
+                if inspect.iscoroutine(outcome):
+                    asyncio.run(outcome)
                 ran += 1
     finally:
         os.chdir(previous)
@@ -100,8 +114,9 @@ def test_provider_independent_cells_run_without_credentials(path, monkeypatch):
     for name in ("TYPESAFE_API_KEY", "NVIDIA_API_KEY", "OPENAI_API_KEY"):
         monkeypatch.delenv(name, raising=False)
     nb = nbformat.read(path, as_version=4)
+    ran = run_offline_cells(nb, path.parent)
     if kind_of(nb) == "example":
-        assert run_offline_cells(nb, path.parent) >= 1, "an example notebook needs an offline cell"
+        assert ran >= 1, "an example notebook needs an offline cell"
 
 
 def test_an_unexecuted_notebook_is_not_a_result():
@@ -144,3 +159,9 @@ def test_a_failing_offline_cell_fails_the_test(tmp_path):
     bad.metadata["tags"] = [OFFLINE_TAG]
     with pytest.raises(RuntimeError, match="broken"):
         run_offline_cells(notebook(bad), tmp_path)
+
+
+def test_offline_cells_may_use_top_level_await(tmp_path):
+    cell = nbformat.v4.new_code_cell("import asyncio\nawait asyncio.sleep(0)\nvalue = 1")
+    cell.metadata["tags"] = [OFFLINE_TAG]
+    assert run_offline_cells(notebook(cell), tmp_path) == 1
