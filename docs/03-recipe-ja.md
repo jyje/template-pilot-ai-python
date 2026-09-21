@@ -51,6 +51,9 @@ class Gateway(Protocol):
    `asyncio.gather` で 10 回、遅いチャットモデルの実行は 3〜5 回）。期待結果付きの手書きシナリオスイープを
    加え、一致数と平均（最小〜最大）を Markdown の表（`IPython.display.Markdown`）で出力し、傾向が見えるように
    します。
+   実サービスでの実行は `uv sync --extra notebook && cd notebooks && uv run jupyter nbconvert --to notebook --execute --inplace <name>.ipynb` で行います。まだ入門用のノートブックは `metadata.pilot.kind: example` とし、
+   実行が済んだら `result` に変えます。すると CI は、すべてのコードセルが実行され出力が残っていることを検査します。
+   認証情報と API 費用が必要なので、手動またはリリース前の手順として実行します。
 
 検証していないことは、はっきり書きます。
 

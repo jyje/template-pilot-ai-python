@@ -52,6 +52,6 @@ select = ["E", "F", "I", "B", "UP", "BLE", "RUF", "ISC", "TRY"]
 ignore = ["TRY003"]
 
 [tool.ruff.lint.per-file-ignores]
-# Notebooks put the sys.path setup before their imports on purpose.
-"*.ipynb" = ["E402"]
+# Notebooks put the sys.path setup before their imports on purpose, and use top-level await.
+"*.ipynb" = ["E402", "F704"]
 "tests/*" = ["TRY002"]

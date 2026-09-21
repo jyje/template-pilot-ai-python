@@ -51,6 +51,9 @@ class Gateway(Protocol):
    for cheap vendor calls with `asyncio.gather`, 3 to 5 for slow chat-model runs), add a hand-written
    scenario sweep with expected outcomes, and print Markdown tables (`IPython.display.Markdown`) with
    agreement counts and mean (min to max), so trends show.
+   Run them live with `uv sync --extra notebook && cd notebooks && uv run jupyter nbconvert --to notebook --execute --inplace <name>.ipynb`. A notebook that is still a starter says `metadata.pilot.kind: example`;
+   once it is executed, set it to `result`, and CI then requires every code cell to have run and kept
+   its output. This is a manual or pre-release step, since it needs credentials and costs API calls.
 
 Say plainly what was not verified.
 
