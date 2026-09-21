@@ -46,10 +46,22 @@ TRANSIENT = (
     requests.exceptions.Timeout,
 )
 RETRYABLE_HTTP_STATUS = frozenset({429, 500, 502, 503, 504})
+# The OpenAI SDK's own policy, which this module replaces: 408, 409, 429, and every 5xx.
+OPENAI_RETRYABLE_STATUS = frozenset({408, 409, 429})
 # A 429 with one of these codes means the plan or quota is used up. Waiting will not fix it.
 PERMANENT_ERROR_CODES = frozenset({"usage_limit_reached", "insufficient_quota"})
 # langchain-nvidia-ai-endpoints raises HTTP failures as a plain Exception("[503] ...").
 _NIM_HTTP_TRANSIENT = re.compile(r"^\[(429|500|502|503|504)\]")
+
+
+def _openai_status_is_transient(exc: openai.APIStatusError) -> bool:
+    """Match the SDK's retry policy: honor `x-should-retry`, else 408, 409, 429, and 5xx."""
+    if exc.code in PERMANENT_ERROR_CODES:
+        return False
+    directive = exc.response.headers.get("x-should-retry", "").strip().lower()
+    if directive in ("true", "false"):
+        return directive == "true"
+    return exc.status_code in OPENAI_RETRYABLE_STATUS or exc.status_code >= 500
 
 
 def is_transient(exc: Exception, never_retry: tuple[type[Exception], ...] = ()) -> bool:
@@ -59,7 +71,7 @@ def is_transient(exc: Exception, never_retry: tuple[type[Exception], ...] = ()) 
         # A 401, 403 or 404 will not fix itself, so do not wait and retry it.
         return exc.status in RETRYABLE_HTTP_STATUS
     if isinstance(exc, openai.APIStatusError):
-        return exc.status_code in RETRYABLE_HTTP_STATUS and exc.code not in PERMANENT_ERROR_CODES
+        return _openai_status_is_transient(exc)
     if isinstance(exc, TRANSIENT):
         return True
     return type(exc) is Exception and bool(_NIM_HTTP_TRANSIENT.match(str(exc)))

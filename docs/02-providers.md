@@ -105,9 +105,10 @@ gets at most 3 tries (the first call plus two retries). The ChatGPT provider is 
 `max_retries=0`, and `ChatNVIDIA` has no retry setting, so no vendor SDK adds its own attempts on top.
 If you turn a vendor retry back on, the two layers multiply.
 
-- **What is retried:** connection errors, timeouts, and HTTP 429, 500, 502, 503, or 504. Never 400,
-  401, 403, or 404, and never a 429 that says the plan or quota is used up (`usage_limit_reached`,
-  `insufficient_quota`), because waiting does not fix those.
+- **What is retried:** connection errors, timeouts, and HTTP 429, 500, 502, 503, or 504 from NIM. For
+  OpenAI errors it keeps the SDK's old policy: HTTP 408, 409, 429, and every 5xx, and an `x-should-retry`
+  header decides when it is present. Never 400, 401, 403, or 404, and never a 429 that says the plan or
+  quota is used up (`usage_limit_reached`, `insufficient_quota`), because waiting does not fix those.
 - **How long it waits:** exponential backoff with jitter (5 s, then 10 s, before jitter), capped at 60 s.
   A `Retry-After` header on the error (seconds or an HTTP date) sets the wait instead, also capped.
 - **How to observe it:** each retry goes to the optional `on_retry(attempt, error)` callback and to the

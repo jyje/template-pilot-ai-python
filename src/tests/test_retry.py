@@ -250,6 +250,30 @@ async def test_the_same_transient_error_gets_the_same_tries_on_both_providers(wa
     assert nim.calls == codex.calls == DEFAULT_ATTEMPTS
 
 
+@pytest.mark.parametrize("status", [408, 409, 500, 501, 502, 503, 504, 529, 599])
+async def test_openai_statuses_the_sdk_would_retry_are_still_retried(waits, status):
+    call = Counter(openai_error(openai.APIStatusError, status))
+    assert await with_retries(call) == "ok"
+    assert call.calls == 2
+
+
+@pytest.mark.parametrize("status", [400, 401, 403, 404, 422])
+def test_other_client_errors_are_not_retried(status):
+    assert not is_transient(openai_error(openai.APIStatusError, status))
+
+
+def test_the_x_should_retry_header_decides_when_present():
+    yes = openai_error(openai.APIStatusError, 400, headers={"x-should-retry": "true"})
+    no = openai_error(openai.InternalServerError, 503, headers={"x-should-retry": "false"})
+    assert is_transient(yes)
+    assert not is_transient(no)
+    # A used-up plan stays permanent even if the header says otherwise.
+    spent = openai_error(
+        openai.RateLimitError, 429, code="usage_limit_reached", headers={"x-should-retry": "true"}
+    )
+    assert not is_transient(spent)
+
+
 def test_openai_status_errors_are_classified_by_status_and_code():
     assert is_transient(openai_error(openai.RateLimitError, 429))
     assert not is_transient(openai_error(openai.RateLimitError, 429, code="usage_limit_reached"))

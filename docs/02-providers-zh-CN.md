@@ -96,8 +96,9 @@ NVIDIA_API_KEY="$(security find-generic-password -s 'NVIDIA API Key' -a <project
 重试）。ChatGPT 提供方以 `max_retries=0` 创建，`ChatNVIDIA` 没有重试设置，所以不会有供应商 SDK 在此之上再叠加
 自己的尝试。如果重新打开供应商的重试，两层会相乘。
 
-- **重试哪些：** 连接错误、超时，以及 HTTP 429、500、502、503、504。绝不重试 400、401、403、404，也不重试表示套餐
-  或配额已用完的 429（`usage_limit_reached`、`insufficient_quota`），因为等待并不能解决这些问题。
+- **重试哪些：** 连接错误、超时，以及 NIM 的 HTTP 429、500、502、503、504。对 OpenAI 的错误沿用此前 SDK 的策略：HTTP 408、
+  409、429 和所有 5xx，若带有 `x-should-retry` 头则以它为准。绝不重试 400、401、403、404，也不重试表示套餐或配额已用完的
+  429（`usage_limit_reached`、`insufficient_quota`），因为等待并不能解决这些问题。
 - **等待多久：** 带抖动的指数退避（抖动前为 5 秒、10 秒），上限 60 秒。如果错误带有 `Retry-After` 头（秒数或 HTTP
   日期），则以它作为等待时间，同样有上限。
 - **如何观察：** 每次重试都会传给可选的 `on_retry(attempt, error)` 回调，并记录到 `pilot_kit.retry` 日志器，内容是
