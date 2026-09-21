@@ -152,11 +152,16 @@ def test_a_malformed_token_file_is_not_a_sign_in(store, text):
         {"refresh_token": 5},
         {"expires_at": None},
         {"expires_at": True},
+        {"expires_at": "not-a-date"},
+        {"expires_at": ""},
+        {"expires_at": 1e30},
+        {"expires_at": float("nan")},
+        {"expires_at": float("inf")},
     ],
 )
 def test_a_structurally_incomplete_store_is_rejected(store, patch):
     data = {**VALID_STORE, **patch} if patch else {}
-    store.write_text(json.dumps(data))
+    store.write_text(json.dumps(data))  # NaN and inf serialize as bare tokens Python reads back
     assert llm.chatgpt_store_status() == "incomplete"
     assert real_chatgpt_signed_in() is False
 
@@ -166,6 +171,14 @@ def test_a_valid_store_is_accepted(store, expires_at):
     store.write_text(json.dumps({**VALID_STORE, "expires_at": expires_at}))
     assert llm.chatgpt_store_status() == "ok"
     assert real_chatgpt_signed_in() is True
+
+
+@pytest.mark.parametrize("expires_at", ["not-a-date", 1e30])
+def test_an_unparseable_expiry_falls_back_to_nim_in_auto_mode(store, monkeypatch, expires_at):
+    monkeypatch.setattr(llm, "chatgpt_signed_in", real_chatgpt_signed_in)
+    monkeypatch.setenv("NVIDIA_API_KEY", "nvapi-test")
+    store.write_text(json.dumps({**VALID_STORE, "expires_at": expires_at}))
+    assert llm.provider_name() == "nim"
 
 
 def test_a_corrupt_store_falls_back_to_nim_in_auto_mode(store, monkeypatch):

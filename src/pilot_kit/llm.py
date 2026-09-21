@@ -14,7 +14,9 @@ its default to `DEFAULT_MODELS`, and its name to `PROVIDERS`.
 from __future__ import annotations
 
 import json
+import math
 import os
+from datetime import UTC, datetime
 from pathlib import Path
 
 from langchain_core.language_models import BaseChatModel
@@ -49,6 +51,22 @@ STORE_HINTS = {
 }
 
 
+def _usable_expiry(value: object) -> bool:
+    """The helper reads `expires_at` as an ISO timestamp or as seconds since the epoch."""
+    if isinstance(value, bool):
+        return False
+    try:
+        if isinstance(value, str):
+            datetime.fromisoformat(value)
+            return True
+        if isinstance(value, int | float) and math.isfinite(value):
+            datetime.fromtimestamp(value, tz=UTC)
+            return True
+    except (ValueError, OverflowError, OSError):
+        pass
+    return False
+
+
 def chatgpt_store_status() -> str:
     """`ok`, or why the stored sign-in is unusable: `missing`, `empty`, `malformed`, `incomplete`.
 
@@ -71,10 +89,7 @@ def chatgpt_store_status() -> str:
         return "malformed"
     if not all(isinstance(data.get(f), str) and data[f].strip() for f in STORE_TOKEN_FIELDS):
         return "incomplete"
-    expires_at = data.get("expires_at")
-    if isinstance(expires_at, bool) or not isinstance(expires_at, str | int | float):
-        return "incomplete"
-    return "ok"
+    return "ok" if _usable_expiry(data.get("expires_at")) else "incomplete"
 
 
 def chatgpt_recovery_hint() -> str:
