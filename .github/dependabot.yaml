@@ -1,5 +1,8 @@
 # Commit messages follow the gitmoji policy in .claude/skills/git-commit-helper:
 # "🤖 ci(deps): bump ...".
+#
+# GitHub Actions are pinned to full commit SHAs with a version comment. Dependabot updates the
+# SHA and the comment together, so the pins stay current without trusting a movable tag.
 version: 2
 updates:
   - package-ecosystem: "uv"
