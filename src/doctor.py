@@ -15,6 +15,7 @@ from langchain_core.messages import HumanMessage
 from pilot_kit.env import env_is_set, load_env
 from pilot_kit.llm import (
     PROVIDERS,
+    chatgpt_recovery_hint,
     chatgpt_signed_in,
     chatgpt_store_path,
     make_chat_model,
@@ -55,9 +56,7 @@ def env_section(provider: str) -> bool:
         ok &= check(
             "Signed in to ChatGPT (no OPENAI_API_KEY needed)",
             signed_in,
-            str(chatgpt_store_path())
-            if signed_in
-            else "run: uv run python -m pilot_kit.chatgpt_login",
+            str(chatgpt_store_path()) if signed_in else chatgpt_recovery_hint(),
         )
     elif provider == "nim":
         hosted = env_is_set("NVIDIA_API_KEY")

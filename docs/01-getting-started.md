@@ -58,7 +58,7 @@ uv sync --extra studio         # LangGraph Studio: uv run langgraph dev --no-bro
 
 | Symptom | Cause and fix |
 | --- | --- |
-| `Not signed in to ChatGPT` | run `uv run python -m pilot_kit.chatgpt_login` once |
+| `Not signed in to ChatGPT: ...` | run `uv run python -m pilot_kit.chatgpt_login` once. The message says whether the token file is missing, empty, malformed, or incomplete, and auto mode then falls back to NIM |
 | `usage_limit_reached` (HTTP 429) from ChatGPT | the plan is used up. Set `LLM_PROVIDER=nim`, or try another model |
 | `model is not supported when using Codex with a ChatGPT account` | pick a model from `python -m pilot_kit.chatgpt_models` |
 | `410 Gone` from NIM | the model reached end of life. Pick another with `LLM_MODEL` |

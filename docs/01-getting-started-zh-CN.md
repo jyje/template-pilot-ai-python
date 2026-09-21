@@ -57,7 +57,7 @@ uv sync --extra studio         # LangGraph Studio: uv run langgraph dev --no-bro
 
 | 现象 | 原因与解决 |
 | --- | --- |
-| `Not signed in to ChatGPT` | 运行一次 `uv run python -m pilot_kit.chatgpt_login` |
+| `Not signed in to ChatGPT: ...` | 运行一次 `uv run python -m pilot_kit.chatgpt_login`。消息会说明令牌文件是缺失、为空、已损坏还是不完整，此时自动选择会回退到 NIM |
 | ChatGPT 返回 `usage_limit_reached`（HTTP 429） | 套餐额度已用完。设置 `LLM_PROVIDER=nim`，或换一个模型 |
 | `model is not supported when using Codex with a ChatGPT account` | 从 `python -m pilot_kit.chatgpt_models` 中选择模型 |
 | NIM 返回 `410 Gone` | 该模型已停止服务。用 `LLM_MODEL` 选择另一个 |

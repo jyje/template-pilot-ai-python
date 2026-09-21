@@ -57,7 +57,7 @@ uv sync --extra studio         # LangGraph Studio: uv run langgraph dev --no-bro
 
 | 증상 | 원인과 해결 |
 | --- | --- |
-| `Not signed in to ChatGPT` | `uv run python -m pilot_kit.chatgpt_login`을 한 번 실행 |
+| `Not signed in to ChatGPT: ...` | `uv run python -m pilot_kit.chatgpt_login`을 한 번 실행. 메시지가 토큰 파일이 없음, 비어 있음, 손상됨, 불완전함 중 무엇인지 알려 주며, 자동 선택은 이때 NIM으로 넘어감 |
 | ChatGPT의 `usage_limit_reached` (HTTP 429) | 요금제 사용량 소진. `LLM_PROVIDER=nim`으로 바꾸거나 다른 모델 시도 |
 | `model is not supported when using Codex with a ChatGPT account` | `python -m pilot_kit.chatgpt_models`에 나온 모델을 선택 |
 | NIM의 `410 Gone` | 모델이 수명 종료. `LLM_MODEL`로 다른 모델 선택 |
