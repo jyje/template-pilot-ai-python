@@ -17,6 +17,7 @@ It does not touch git. Commit the result yourself: `🎉 init: set up pilot-topi
 from __future__ import annotations
 
 import argparse
+import json
 import re
 import subprocess
 import sys
@@ -67,7 +68,10 @@ def transform(text: str, path: Path, name: str, owner: str, description: str) ->
     text = TAGLINE.sub(lambda m: f"{m.group(1)}\n\n🚀 Pilot project for {description}\n\n{m.group(2)}", text)
     text = TEMPLATE_BLOCK.sub("", text)
     if path.name == "pyproject.toml":
-        text = re.sub(r'^description = ".*"$', f'description = "{description}"', text, flags=re.M)
+        description_value = json.dumps(description, ensure_ascii=False)
+        text = re.sub(
+            r'^description = ".*"$', lambda _: f"description = {description_value}", text, flags=re.M
+        )
     return text
 
 
