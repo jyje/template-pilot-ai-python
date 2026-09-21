@@ -48,6 +48,8 @@ class Gateway(Protocol):
 3. **Notebook：** 执行并保留输出。不要止步于单次运行：重复每个实验（廉价的供应商调用用 `asyncio.gather`
    跑 10 次，慢的聊天模型运行跑 3 到 5 次），再加上一组带预期结果的手写场景扫描，并用 Markdown 表格
    （`IPython.display.Markdown`）输出一致次数和均值（最小到最大），让趋势显现出来。
+   实际运行用 `uv sync --extra notebook && cd notebooks && uv run jupyter nbconvert --to notebook --execute --inplace <name>.ipynb`。仍是起步示例的 notebook 在 `metadata.pilot.kind` 中标为 `example`，运行完成后改为
+   `result`，此后 CI 会要求每个代码单元都已执行并保留输出。它需要凭据并产生 API 费用，所以作为手动或发布前的步骤。
 
 对没有验证的部分要如实说明。
 

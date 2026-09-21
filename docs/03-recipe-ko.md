@@ -49,6 +49,9 @@ class Gateway(Protocol):
 3. **노트북:** 실행하고 출력을 보존합니다. 한 번 실행에서 멈추지 말고 실험을 반복하세요(싼 벤더 호출은
    `asyncio.gather`로 10번, 느린 채팅 모델 실행은 3~5번). 기대 결과가 있는 손으로 쓴 시나리오 스윕을 더하고,
    일치 횟수와 평균(최소~최대)을 담은 Markdown 표(`IPython.display.Markdown`)로 출력해 경향이 보이게 합니다.
+   실제 실행은 `uv sync --extra notebook && cd notebooks && uv run jupyter nbconvert --to notebook --execute --inplace <name>.ipynb`로 합니다. 아직 시작용인 노트북은 `metadata.pilot.kind: example`로 표시하고, 실행을
+   마치면 `result`로 바꿉니다. 그러면 CI가 모든 코드 셀이 실행되었고 출력이 남아 있는지 검사합니다. 자격 증명과 API 비용이
+   필요하므로 수동 또는 릴리스 전 단계로 실행합니다.
 
 검증하지 못한 것은 있는 그대로 적습니다.
 

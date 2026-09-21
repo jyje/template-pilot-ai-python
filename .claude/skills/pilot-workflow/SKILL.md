@@ -52,6 +52,9 @@ work done before it had one.
 3. Notebooks: executed, outputs kept. **Repeat each experiment** (10 runs for cheap vendor calls with
    `asyncio.gather`, 3 to 5 for slow chat-model runs), add a hand-written scenario sweep with expected
    outcomes, and print Markdown tables with agreement counts and mean (min to max).
+   Run live with `uv sync --extra notebook && cd notebooks && uv run jupyter nbconvert --to notebook --execute --inplace <name>.ipynb`. A starter notebook says `metadata.pilot.kind: example`; after it is
+   executed set `result`, and `tests/test_notebooks.py` then requires every code cell to have run and
+   kept its output. Cells tagged `offline` run in CI without credentials.
 
 Run slow work in the background (`nohup` scripts, one at a time: hosted NIM slows under concurrent
 load). Say plainly what was not verified.
