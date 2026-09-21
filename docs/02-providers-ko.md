@@ -95,6 +95,21 @@ NVIDIA_API_KEY="$(security find-generic-password -s 'NVIDIA API Key' -a <project
 
 프로젝트마다 새 항목을 추가하세요. 다른 프로젝트의 항목을 덮어쓰지 마세요.
 
+## 재시도
+
+`pilot_kit.retry.with_retries`가 두 공급자 모두의 유일한 재시도 담당입니다. 논리적인 모델 호출 하나는 최대 3번
+시도합니다(첫 호출과 재시도 2번). ChatGPT 공급자는 `max_retries=0`으로 만들고 `ChatNVIDIA`에는 재시도 설정이
+없으므로, 벤더 SDK가 자체 시도를 더하지 않습니다. 벤더 재시도를 다시 켜면 두 계층이 곱해집니다.
+
+- **재시도 대상:** 연결 오류, 타임아웃, NIM의 HTTP 429, 500, 502, 503, 504. OpenAI 오류에는 예전 SDK 정책을 그대로
+  씁니다. HTTP 408, 409, 429와 모든 5xx이며, `x-should-retry` 헤더가 있으면 그것이 우선합니다. 400, 401, 403, 404는
+  재시도하지 않으며, 요금제나 할당량이 소진되었다는 429(`usage_limit_reached`, `insufficient_quota`)도 기다려도
+  해결되지 않으므로 재시도하지 않습니다.
+- **대기 시간:** 지터를 섞은 지수 백오프(지터 전 기준 5초, 10초)이며 최대 60초입니다. 오류에 `Retry-After` 헤더(초 또는
+  HTTP 날짜)가 있으면 그 값이 대기 시간이 되고, 이것도 최대값으로 제한됩니다.
+- **관찰 방법:** 재시도할 때마다 선택 인자인 `on_retry(attempt, error)` 콜백과 `pilot_kit.retry` 로거에 오류 종류와
+  HTTP 상태가 기록되며, 오류 메시지는 기록하지 않습니다.
+
 ## 세 번째 공급자 추가
 
 예를 들어 LM Studio 같은 로컬 OpenAI 호환 서버라면, `PROVIDERS`에 이름을, `DEFAULT_MODELS`에 기본 모델을

@@ -7,6 +7,7 @@ Add a section for your own product's API here (see `product_section`) as soon as
 
 from __future__ import annotations
 
+import asyncio
 import os
 import sys
 
@@ -22,6 +23,7 @@ from pilot_kit.llm import (
     model_name,
     provider_name,
 )
+from pilot_kit.retry import with_retries
 
 load_env()
 # Keep LangSmith out of diagnostics runs.
@@ -89,7 +91,10 @@ def llm_section(provider: str) -> bool:
         skip("Basic inference", "no NVIDIA_API_KEY or NVIDIA_BASE_URL")
         return True
     try:
-        reply = make_chat_model().invoke([HumanMessage("Reply with the single word: ok")])
+        chat = make_chat_model()  # built once, outside the retry: a bad setup will not fix itself
+        reply = asyncio.run(
+            with_retries(lambda: chat.ainvoke([HumanMessage("Reply with the single word: ok")]))
+        )
     except Exception as exc:  # noqa: BLE001 - diagnostics report every failure kind
         return check("Basic inference", False, f"{type(exc).__name__}: {exc}")
     return check("Basic inference", bool(reply.text), f"reply: {reply.text.strip()[:60]!r}")
