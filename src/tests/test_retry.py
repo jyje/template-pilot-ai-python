@@ -105,11 +105,22 @@ async def test_nim_http_503_is_retried_but_403_is_not():
         await with_retries(forbidden, delay=0)
 
 
-def openai_error(cls, status: int, *, code: str | None = None, headers: dict | None = None):
+def openai_error(
+    cls,
+    status: int,
+    *,
+    code: str | None = None,
+    type_: str | None = None,
+    headers: dict | None = None,
+):
     request = httpx2.Request("POST", "https://example.invalid/v1/responses")
     response = httpx2.Response(status, headers=headers, request=request)
-    body = {"code": code, "message": "secret detail"} if code else None
-    return cls("secret detail", response=response, body=body)
+    body = {"message": "secret detail"}
+    if code:
+        body["code"] = code
+    if type_:
+        body["type"] = type_
+    return cls("secret detail", response=response, body=body if (code or type_) else None)
 
 
 class Counter:
@@ -160,8 +171,10 @@ async def test_a_call_that_keeps_failing_makes_exactly_the_default_number_of_tri
         openai_error(openai.BadRequestError, 400),
         openai_error(openai.RateLimitError, 429, code="usage_limit_reached"),
         openai_error(openai.RateLimitError, 429, code="insufficient_quota"),
+        # The ChatGPT backend reports a used-up plan in `type`, not `code`.
+        openai_error(openai.RateLimitError, 429, type_="usage_limit_reached"),
     ],
-    ids=lambda e: f"{type(e).__name__}-{e.status_code}-{e.code}",
+    ids=lambda e: f"{type(e).__name__}-{e.status_code}-{e.code or e.type}",
 )
 async def test_permanent_openai_errors_are_tried_once(waits, error):
     call = Counter(error)
@@ -278,3 +291,28 @@ def test_openai_status_errors_are_classified_by_status_and_code():
     assert is_transient(openai_error(openai.RateLimitError, 429))
     assert not is_transient(openai_error(openai.RateLimitError, 429, code="usage_limit_reached"))
     assert not is_transient(openai_error(openai.AuthenticationError, 401))
+
+
+async def test_a_used_up_plan_reported_in_the_type_field_is_never_retried_and_never_waits(waits):
+    error = openai_error(openai.RateLimitError, 429, type_="usage_limit_reached")
+    assert not is_transient(error)
+    call = Counter(error)
+    with pytest.raises(openai.RateLimitError):
+        await with_retries(call)
+    assert call.calls == 1
+    assert waits == []
+
+
+async def test_an_overloaded_stream_error_without_a_status_is_retried(waits):
+    request = httpx2.Request("POST", "https://example.invalid/v1/responses")
+    overloaded = openai.APIError(
+        "Our servers are currently overloaded. Please try again later.", request=request, body=None
+    )
+    call = Counter(overloaded)
+    assert await with_retries(call) == "ok"
+    assert call.calls == 2
+
+
+def test_other_status_less_openai_errors_are_not_retried():
+    request = httpx2.Request("POST", "https://example.invalid/v1/responses")
+    assert not is_transient(openai.APIError("invalid schema", request=request, body=None))
