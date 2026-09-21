@@ -93,7 +93,8 @@ def test_bad_names_are_rejected(copy):
 )
 def test_special_characters_in_a_description_keep_pyproject_toml_valid(copy, description):
     script = load_script()
-    assert script.main(["pilot-demo-topic", "--description", description, "--keep-script"], root=copy) == 0
+    argv = ["pilot-demo-topic", "--description", description, "--keep-script"]
+    assert script.main(argv, root=copy) == 0
     pyproject = tomllib.loads((copy / "src" / "pyproject.toml").read_text())
     assert pyproject["project"]["description"] == description
 
