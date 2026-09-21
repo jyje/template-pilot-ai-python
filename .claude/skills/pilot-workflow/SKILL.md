@@ -43,6 +43,7 @@ work done before it had one.
   so tests inject a fake that returns the SDK's real response type.
 - Chat models come from `pilot_kit.llm.make_chat_model()`. Never hard-code a provider in a case.
 - Retry the chat model call only, never a whole graph or agent run (a replay calls the vendor again).
+  `pilot_kit.retry` is the only retry owner: keep vendor SDK retries at zero (`max_retries=0`).
 - Follow the `python-lint` skill before calling any Python change done.
 
 ## 5. Verify in three tiers
