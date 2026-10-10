@@ -1,33 +1,26 @@
 # GOAL
 
-Paste the initial prompt here, word for word. Everything else derives from it: the checklist in
-`PLAN.md`, the goals in the README, the cases in `src/`. Keeping the prompt means the intent survives
-the implementation.
-
 ## Initial prompt
 
-<!-- Paste it here. -->
+"Please experiment in the jyje pilot template project. I want to use the latest embedding model with an authentication token from my OpenAI Codex subscription. Make a plan."
 
 ## Requirements
 
-Fill this in with the user. Ask only about what the request and the code cannot settle, and say which
-defaults you picked for the rest.
-
 | # | Requirement | Answer |
 | --- | --- | --- |
-| 1 | Subject: the model or product to study | |
-| 2 | Purpose: what a reader should learn or be able to do | |
-| 3 | Official docs URL (the source of truth) | |
-| 4 | Vendor skill and how to install it | |
-| 5 | Cases to build, one folder each | |
-| 6 | Chat model providers | Default: (1) ChatGPT subscription through Codex OAuth, (2) NVIDIA NIM |
-| 7 | Python version | 3.13 |
-| 8 | Reference projects (read local checkouts, do not clone) | |
-| 9 | Vendor logo for the README | |
-| 10 | Doc languages, in this order | English, Korean, Japanese, Simplified Chinese |
-| 11 | Verification | scripts and notebooks, with repeated experiments |
-| 12 | Secrets | `.env` at the repo root, macOS keychain as a backup |
+| 1 | Subject | Whether Codex subscription OAuth works with embeddings and the Decisions API, and which supported alternatives are available |
+| 2 | Purpose | Record reproducible, endpoint-specific compatibility evidence and compare supported API and local alternatives for multilingual retrieval |
+| 3 | Official docs | [Embeddings](https://developers.openai.com/api/docs/guides/embeddings); [Decisions](https://developers.openai.com/api/docs/guides/decisions); [Codex app-server](https://developers.openai.com/siwc/token-sharing-open-source/codex-app-server); [billing](https://help.openai.com/en/articles/9039756-managing-billing-for-chatgpt-and-the-api-platform) |
+| 4 | Vendor skill | None required for the initial feasibility study |
+| 5 | Cases | Case 01: auth and provider feasibility. Case 02: multilingual retrieval comparison |
+| 6 | Providers | Keep Codex OAuth scoped to the existing chat integration. Compare an official OpenAI API embedding provider if separately authorized and a local embedding model |
+| 7 | Python | 3.13 |
+| 8 | References | Existing `pilot_kit` Codex chat integration and official OpenAI API documentation |
+| 9 | Logo | Existing template logo |
+| 10 | Languages | English, Korean, Japanese, Simplified Chinese |
+| 11 | Verification | Offline fakes first; live calls only through documented APIs and with approved credentials; repeated small retrieval experiments |
+| 12 | Secrets | Never inspect or copy `~/.codex/auth.json`; do not read token values; keep any explicitly supplied API key in ignored `.env` |
 
 ## What it is not
 
-<!-- Two or three lines that set expectations: not a benchmark, not production code, and so on. -->
+This is a feasibility pilot, not a production embedding service or a way to bypass API billing, Codex usage limits, or undocumented endpoint restrictions. Any unofficial compatibility experiment is bounded and reported as endpoint-specific; it does not make that authentication path supported or suitable for production. The pilot will not reverse engineer private Codex endpoints.
