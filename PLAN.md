@@ -32,7 +32,7 @@ Investigate ChatGPT/Codex subscription OAuth for embeddings and the GPT-6 Luna D
 - [x] Inspect repository and official docs: Codex OAuth is documented for app-server Responses inference; embeddings use `/v1/embeddings`; docs do not describe OAuth embeddings; billing is separate | `📄 docs(plan): record documented OAuth boundaries`
 - [x] Run one low-volume OAuth compatibility probe using LangChain's refresh-aware token provider and an inherited OpenAI client; embeddings returned successfully without an API key | `✅ test(embeddings): record OAuth compatibility result`
 - [x] Probe `POST /v1/decisions` once with `gpt-6-luna`; OAuth request returned HTTP 401 | `✅ test(decisions): record OAuth rejection result`
-- [ ] Upgrade OpenAI Python SDK to 3.26.0, confirm typed `client.decisions.create`, and retry once; OAuth still returned HTTP 401 | `⬆️ dep(openai): require SDK 3.26.0 for Decisions API`
+- [x] Upgrade OpenAI Python SDK to 3.26.0, confirm typed `client.decisions.create`, and retry once; OAuth still returned HTTP 401 | `⬆️ dep(openai): require SDK 3.26.0 for Decisions API`
 - [ ] Inspect SDK authentication and exception source, research firsthand reports, and repeat OAuth probes with normalized error handling and Codex headers | `📄 docs(auth): record Decisions authentication findings`
 
 ### Foundation and implementation
@@ -66,3 +66,5 @@ The repository uses an experimental private LangChain chat class with a ChatGPT 
 A one-shot request used LangChain's `_FileChatGPTOAuthTokenProvider` through a subclassed OpenAI client, without an API key or printing the token. `text-embedding-3-large` returned successfully with 3072 dimensions and 7 prompt tokens. This confirms only that this request worked at that time; it does not establish official support, future availability, or which usage and billing bucket was charged.
 
 A one-shot `POST /v1/decisions` request with `gpt-6-luna` and the same OAuth provider returned HTTP 401. The request used OpenAI SDK 3.16.2, which did not expose a typed Decisions resource. No retries were made within the request.
+
+The project now requires OpenAI Python SDK 3.26.0, where `client.decisions.create` is available. Retrying the native Decisions request through that typed method still returned HTTP 401. The initial error handling did not retain the normalized server message; a bounded diagnostic follow-up is recorded below.
