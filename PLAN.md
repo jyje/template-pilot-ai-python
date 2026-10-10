@@ -30,7 +30,7 @@ Investigate ChatGPT/Codex subscription OAuth for embeddings and the GPT-6 Luna D
 ### Feasibility
 
 - [x] Inspect repository and official docs: Codex OAuth is documented for app-server Responses inference; embeddings use `/v1/embeddings`; docs do not describe OAuth embeddings; billing is separate | `📄 docs(plan): record documented OAuth boundaries`
-- [ ] Run one low-volume OAuth compatibility probe using LangChain's refresh-aware token provider and an inherited OpenAI client; embeddings returned successfully without an API key | `✅ test(embeddings): record OAuth compatibility result`
+- [x] Run one low-volume OAuth compatibility probe using LangChain's refresh-aware token provider and an inherited OpenAI client; embeddings returned successfully without an API key | `✅ test(embeddings): record OAuth compatibility result`
 - [ ] Probe `POST /v1/decisions` once with `gpt-6-luna`; OAuth request returned HTTP 401 | `✅ test(decisions): record OAuth rejection result`
 - [ ] Upgrade OpenAI Python SDK to 3.26.0, confirm typed `client.decisions.create`, and retry once; OAuth still returned HTTP 401 | `⬆️ dep(openai): require SDK 3.26.0 for Decisions API`
 - [ ] Inspect SDK authentication and exception source, research firsthand reports, and repeat OAuth probes with normalized error handling and Codex headers | `📄 docs(auth): record Decisions authentication findings`
@@ -60,3 +60,7 @@ Investigate ChatGPT/Codex subscription OAuth for embeddings and the GPT-6 Luna D
 ## Initial finding: 2026-10-08
 
 The repository uses an experimental private LangChain chat class with a ChatGPT Codex backend. OpenAI documents ChatGPT OAuth through Codex app-server for Responses inference. The embeddings guide documents `/v1/embeddings` but does not document ChatGPT OAuth for that endpoint. OpenAI states API billing is separate from ChatGPT subscriptions. Documentation links and model and SDK guidance were rechecked on 2026-10-10. Do not treat undocumented OAuth compatibility as supported or production-ready. See [Codex app-server](https://developers.openai.com/siwc/token-sharing-open-source/codex-app-server), [embeddings](https://developers.openai.com/api/docs/guides/embeddings), [Decisions](https://developers.openai.com/api/docs/guides/decisions), and [billing](https://help.openai.com/en/articles/9039756-managing-billing-for-chatgpt-and-the-api-platform).
+
+## Embeddings probe: 2026-10-08
+
+A one-shot request used LangChain's `_FileChatGPTOAuthTokenProvider` through a subclassed OpenAI client, without an API key or printing the token. `text-embedding-3-large` returned successfully with 3072 dimensions and 7 prompt tokens. This confirms only that this request worked at that time; it does not establish official support, future availability, or which usage and billing bucket was charged.
