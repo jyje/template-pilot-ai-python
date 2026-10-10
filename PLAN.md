@@ -53,6 +53,7 @@ Investigate ChatGPT/Codex subscription OAuth for embeddings and the GPT-6 Luna D
 
 ### Documentation and quality
 
+- [x] Add native OpenAI Decisions API authentication guidance to all README locales | `📄 docs(readme): clarify Decisions API access`
 - [ ] Update the English goal, README, and provider guide with the verified boundary and setup | `📄 docs(en): explain embedding providers`
 - [ ] Translate changed sections into Korean, Japanese, and Simplified Chinese | `📄 docs(i18n): translate embedding provider guidance`
 - [ ] Run ruff, format check, ty, pytest, notebook checks, Mermaid checks, and secret scan | `✅ test(quality): pass pilot quality gates`

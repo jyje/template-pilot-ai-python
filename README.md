@@ -64,6 +64,12 @@ What it is not:
 - A benchmark of [product]'s accuracy.
 - Production code.
 
+## OpenAI Decisions API
+
+The native Decisions API is a separate OpenAI endpoint at `POST /v1/decisions`; it is not Jev/TypeSafe or a structured-output call through Responses. Follow the [official Decisions guide](https://developers.openai.com/api/docs/guides/decisions), use an OpenAI API key, and verify that the account or organization has Decisions access. A successful ChatGPT/Codex OAuth request to another endpoint does not establish access here.
+
+In this pilot, the tested Codex OAuth bearer request returned HTTP 401, `A valid API key is required.`, including with OpenAI Python SDK 3.26.0 and Codex account headers. This is evidence for that tested credential and route, not a universal claim about every OAuth flow. A separate direct-call report received HTTP 403, `Decision API is not enabled for this user`, with an API key, so a key alone may not mean the account is enabled. If Decisions access is unavailable, a structured-output request through Responses is a distinct fallback and must not be reported as a native Decisions result. See the [independent API-key report](https://www.eesel.ai/blog/openai-decisions-api).
+
 ## Cases
 
 Results come from the executed notebooks in `src/notebooks/`, which repeat each experiment several times so that trends show.

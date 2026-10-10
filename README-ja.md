@@ -64,6 +64,12 @@ python3 scripts/init_pilot.py pilot-<topic> --description "what it studies"
 - [製品] の精度を測るベンチマーク。
 - 本番用コード。
 
+## OpenAI Decisions API
+
+ネイティブ Decisions API は `POST /v1/decisions` の独立した OpenAI エンドポイントです。Jev/TypeSafe や Responses の構造化出力呼び出しとは異なります。[公式 Decisions ガイド](https://developers.openai.com/api/docs/guides/decisions)に従い、OpenAI API キーを使用して、アカウントまたは組織に利用権限があることを確認してください。別のエンドポイントで ChatGPT/Codex OAuth が成功しても、この API の利用権限があるとは限りません。
+
+このパイロットでテストした Codex OAuth の Bearer リクエストは、OpenAI Python SDK 3.26.0 と Codex アカウントヘッダーを使っても HTTP 401、`A valid API key is required.` を返しました。これはテストした認証情報とルートでの観測であり、すべての OAuth フローに当てはまるという意味ではありません。別の直接呼び出し報告では API キーを使っても HTTP 403、`Decision API is not enabled for this user` が返されています。そのため、API キーがあってもアカウントで機能が有効とは限りません。Decisions API を利用できない場合は Responses の構造化出力を別の代替手段として使い、ネイティブ Decisions API の結果として記録しないでください。[API キーによる直接呼び出しの報告](https://www.eesel.ai/blog/openai-decisions-api)も参照してください。
+
 ## ケース
 
 結果は `src/notebooks/` の実行済みノートブックによるもので、各実験を複数回繰り返して傾向が見えるようにしています。
