@@ -9,7 +9,7 @@ dependencies = [
     "langchain-nvidia-ai-endpoints>=1.4.3",
     "langchain-openai>=1.6.2",
     "langgraph>=1.2.11",
-    "openai>=3.0.0",
+    "openai>=3.26.0",
     "python-dotenv>=1.2.3",
     "requests>=2.31",
 ]

@@ -64,6 +64,12 @@ python3 scripts/init_pilot.py pilot-<topic> --description "what it studies"
 - [제품]의 정확도를 재는 벤치마크가 아닙니다.
 - 운영용 코드가 아닙니다.
 
+## OpenAI 결정 API
+
+네이티브 결정 API는 `POST /v1/decisions`의 별도 OpenAI 엔드포인트입니다. Jev/TypeSafe나 Responses를 통한 구조화 출력 호출과는 다릅니다. [공식 결정 API 가이드](https://developers.openai.com/api/docs/guides/decisions)를 따르고 OpenAI API 키를 사용하며, 계정 또는 조직에 결정 API 접근 권한이 있는지 확인하세요. 다른 엔드포인트에서 ChatGPT/Codex OAuth 요청이 성공해도 이 API 접근이 보장되지는 않습니다.
+
+이 파일럿에서 테스트한 Codex OAuth bearer 요청은 OpenAI Python SDK 3.26.0과 Codex 계정 헤더를 사용해도 HTTP 401, `A valid API key is required.`를 반환했습니다. 이는 테스트한 인증 정보와 경로에서 관찰한 결과이지, 모든 OAuth 흐름에 대한 보편적인 결론은 아닙니다. 별도의 직접 호출 보고에서는 API 키를 사용했는데도 HTTP 403, `Decision API is not enabled for this user`가 나왔습니다. 따라서 API 키가 있어도 계정에서 기능이 활성화되어 있지 않을 수 있습니다. 결정 API를 사용할 수 없다면 Responses의 구조화 출력 호출을 별도 대안으로 사용하되, 네이티브 결정 API 결과라고 기록하지 마세요. [API 키 직접 호출 사례](https://www.eesel.ai/blog/openai-decisions-api)도 참고하세요.
+
 ## 케이스
 
 결과는 `src/notebooks/`의 실행된 노트북에서 가져왔으며, 각 실험을 여러 번 반복해 경향이 보이게 합니다.

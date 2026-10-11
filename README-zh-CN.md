@@ -64,6 +64,12 @@ python3 scripts/init_pilot.py pilot-<topic> --description "what it studies"
 - [产品] 准确率的基准测试。
 - 生产级代码。
 
+## OpenAI Decisions API
+
+原生 Decisions API 是 OpenAI 的独立端点 `POST /v1/decisions`，不同于 Jev/TypeSafe，也不同于通过 Responses 发起的结构化输出调用。请遵循[官方 Decisions 指南](https://developers.openai.com/api/docs/guides/decisions)，使用 OpenAI API 密钥，并确认账号或组织已获准访问。ChatGPT/Codex OAuth 在其他端点调用成功，并不能证明可访问此 API。
+
+在本试点中，测试的 Codex OAuth bearer 请求返回 HTTP 401：`A valid API key is required.`；即使使用 OpenAI Python SDK 3.26.0 和 Codex 账号请求头，结果也相同。这只说明该凭据和端点组合的实测结果，并不代表所有 OAuth 流程。另有一份直接调用报告称，使用 API 密钥仍收到 HTTP 403：`Decision API is not enabled for this user`。因此，拥有 API 密钥也不一定代表账号已启用该功能。如果无法使用 Decisions API，可将 Responses 结构化输出作为独立替代方案，但不要把它记录为原生 Decisions 结果。另请参阅[使用 API 密钥直接调用的报告](https://www.eesel.ai/blog/openai-decisions-api)。
+
 ## 案例
 
 结果来自 `src/notebooks/` 中已执行的 notebook，它们把每个实验重复多次，让趋势清晰可见。
